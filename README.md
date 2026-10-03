@@ -1,154 +1,86 @@
-<a id="readme-top"></a>
+# OOD Detection with Metric Learning
 
+This project explores whether metric learning improves out-of-distribution detection.
 
-[![LinkedIn][linkedin-shield]][linkedin-url]
+The model is trained only on 5 CIFAR-10 classes, treated as in-distribution. OOD detection is evaluated on an external dataset. SVHN is used by default, while CIFAR-100 and Textures/DTD can be selected through configuration.
 
-<h3 align="center">Classification with Confusion Analysis using UMAP</h3>
+## Experiments
 
-![Alt text](https://github.com/mofidi80/Confusion_Triplet_Umap/blob/cae935ffa01b8da17e8cb437974565a34f24f513/blob/Presentation1.png)
+- CrossEntropy baseline
+- CrossEntropy + Triplet loss
+- CrossEntropy + SupCon loss
+- CrossEntropy + Triplet loss + synthetic outlier exposure
 
-  <p align="center">
-    A  deep learning project that implements a CNN model for MNIST digit classification, analyzes confusion patterns between classes, and visualizes embeddings using UMAP dimensionality reduction.
-    <br />
-    <br />
-    <br />
-  </p>
-</div>
+Synthetic outlier training uses random noise images and an energy-based loss to encourage the model to assign high energy / low confidence to outlier inputs.
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-        <li><a href="#skills-required">Skills Required</a><li>
-      </ul>
-    <li><a href="#installation">Installation</a></li>
-    <li><a href="#possible-usage">Possible Usage</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ol>
-</details>
+## OOD Scoring Methods
 
-## About The Project
-In this project we make a CNN model for classification on MNIST dataset, and for this we use both cross entropy loss, and triplet loss and analyze the effect of triplet loss. We also use confusion matrix to analyze the accuracy of the model on each class. Afterwards we use UMAP to vizualize the embeddings of each class.
+Each model is evaluated with the following OOD scores:
 
-## Project Overview
+- MSP
+- Energy
+- Prototype distance
+- Mahalanobis distance
+- kNN distance
 
-This project demonstrates a complete pipeline for:
-- Training a Convolutional Neural Network (CNN) on the MNIST dataset
-- Generating and analyzing confusion matrices to identify frequently confused digit pairs
-- Extracting feature embeddings and visualizing them using UMAP
-- Focusing specifically on the most confused digit classes for detailed analysis
+Reported metrics:
 
-## Outcome
-- Accuracy: 84% on test subset
-- Most Confused: Classes 2 & 5
-- Visualization: UMAP shows overlapping embeddings for confused digits
+- ID classification accuracy
+- OOD AUROC
+- FPR95 at 95% TPR
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+## Visualization
 
+The project can generate UMAP plots of ID and OOD embeddings.
 
-## Built With
-* Python
-   + Numpy
-   + Pandas
-   + Scikit-Learn
-   + Matplotlib
-   + Seaborn
-   + Pytorch
+## Setup
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Install dependencies:
 
+    pip install torch torchvision numpy pandas scikit-learn matplotlib umap-learn pytorch-metric-learning
 
-## Skills Required
-* Exploratory Data Analysis
-* Classification ML Models
-* Data Visualization
+## Run
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Run the main script:
 
+    python main.py
 
-## Installation
-1. First intall jupyter notebook from the link below if you haven't already.
-   + https://jupyter.org/install
-2. Make sure you have all the libraries mentioned in Built With section installed; If not first run your environment then use the following commands:
-+ 
-  ```console
-  pip install torch torchvision pytorch-metric-learning umap-learn numpy matplotlib seaborn scikit-learn
-  ```
+## Configuration
 
-3. Run noteboook.
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Most settings are in the Config class.
 
+Example:
 
-## Possible usage
-This project demonstrates techniques useful for:
-- Understanding model limitations and failure modes
-- Feature space analysis and interpretability
-- Educational purposes in deep learning courses
-- Baseline for more complex image classification tasks
+    ood_dataset = "svhn"
+    epochs = 15
+    batch_size = 128
+    experiments = ["ce", "triplet", "supcon", "triplet_outliers"]
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Supported OOD datasets:
 
+    ood_dataset = "svhn"
+    ood_dataset = "cifar100"
+    ood_dataset = "textures"
 
+For limited compute, run fewer experiments:
 
-<!-- CONTRIBUTING -->
-## Contributing
+    experiments = ["ce", "triplet_outliers"]
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+## Outputs
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+Results are saved in:
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+    results/
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Typical outputs include:
 
+- training logs
+- OOD metrics CSV
+- model checkpoints
+- UMAP plots
 
-<!-- LICENSE -->
-## License
+## Notes
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTACT -->
-## Contact
-Mohammad Mofidi
-* Email: mohammad.mofidi.k@gmail.com
-* Linkedin: https://www.linkedin.com/in/mohammad-mofidikhajeh
-* Instagram: https://www.instagram.com/_mohammadmofidi/
-
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://www.linkedin.com/in/mohammad-mofidi-khajeh-2715832b8/
-
-
-
-
-
-
-
-
-
-
-
-
-  
+- Current experiments use a single seed.
+- Results are preliminary until full runs complete.
+- SVHN is easier; CIFAR-100 or Textures/DTD are harder OOD options.
