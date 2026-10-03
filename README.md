@@ -41,9 +41,7 @@ Install dependencies:
 
 ## Run
 
-Run the main script:
-
-    python main.py
+Simply run the jupyter notebook cell containing the code. The notebook is among the provided files.
 
 ## Configuration
 
