@@ -1,5 +1,7 @@
 # Metric Learning for Out-of-Distribution Detection
 
+![Alt text](https://github.com/MMofidikhajeh/ood-detection-metric-learning/blob/6703abee94f0a6f9f801a3ded0cc9686780f9273/blob/Presentation1.png)
+
 This repository contains a PyTorch project exploring whether metric-learning objectives improve **out-of-distribution (OOD) detection** compared with standard cross-entropy training.
 
 The project trains a ResNet-18 model only on in-distribution data and then evaluates multiple OOD scoring functions on an external OOD test set.
